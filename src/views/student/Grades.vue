@@ -264,7 +264,7 @@ const grades = ref([
 		studentId: 4,
 		studentName: "Ali Karimov",
 		courseId: 1,
-		courseTitle: "Dasturlash asoslari",
+		courseTitle: "Informatika",
 		assignmentId: 1,
 		assignmentTitle: "Python o'zgaruvchilar",
 		grade: 85,
@@ -279,7 +279,7 @@ const grades = ref([
 		studentId: 4,
 		studentName: "Ali Karimov",
 		courseId: 1,
-		courseTitle: "Dasturlash asoslari",
+		courseTitle: "Informatika",
 		assignmentId: 2,
 		assignmentTitle: "Shartli operatorlar",
 		grade: 90,
@@ -294,7 +294,7 @@ const grades = ref([
 		studentId: 4,
 		studentName: "Ali Karimov",
 		courseId: 2,
-		courseTitle: "Matematika asoslari",
+		courseTitle: "Mobilografiya asoslari",
 		assignmentId: 3,
 		assignmentTitle: "Kvadrat tenglama",
 		grade: 92,
@@ -309,8 +309,8 @@ const grades = ref([
 // Options
 const courseOptions = [
 	{ label: "Barcha kurslar", value: "all" },
-	{ label: "Dasturlash asoslari", value: 1 },
-	{ label: "Matematika asoslari", value: 2 },
+	{ label: "Informatika", value: 1 },
+	{ label: "Mobilografiya asoslari", value: 2 },
 ];
 
 const gradeTypeOptions = [

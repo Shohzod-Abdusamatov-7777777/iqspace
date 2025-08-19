@@ -260,7 +260,7 @@ const schedule = ref([
 	{
 		id: 1,
 		courseId: 1,
-		courseTitle: "Dasturlash asoslari",
+		courseTitle: "Informatika",
 		teacherName: "Jamshid Doniyorov",
 		dayOfWeek: 1, // Monday
 		dayName: "Dushanba",
@@ -274,7 +274,7 @@ const schedule = ref([
 	{
 		id: 2,
 		courseId: 2,
-		courseTitle: "Matematika asoslari",
+		courseTitle: "Mobilografiya asoslari",
 		teacherName: "Dilfuza Rahimova",
 		dayOfWeek: 1,
 		dayName: "Dushanba",
@@ -288,7 +288,7 @@ const schedule = ref([
 	{
 		id: 3,
 		courseId: 1,
-		courseTitle: "Dasturlash asoslari",
+		courseTitle: "Informatika",
 		teacherName: "Jamshid Doniyorov",
 		dayOfWeek: 3, // Wednesday
 		dayName: "Chorshanba",
@@ -302,7 +302,7 @@ const schedule = ref([
 	{
 		id: 4,
 		courseId: 2,
-		courseTitle: "Matematika asoslari",
+		courseTitle: "Mobilografiya asoslari",
 		teacherName: "Dilfuza Rahimova",
 		dayOfWeek: 3,
 		dayName: "Chorshanba",
@@ -316,7 +316,7 @@ const schedule = ref([
 	{
 		id: 5,
 		courseId: 1,
-		courseTitle: "Dasturlash asoslari",
+		courseTitle: "Informatika",
 		teacherName: "Jamshid Doniyorov",
 		dayOfWeek: 5, // Friday
 		dayName: "Juma",

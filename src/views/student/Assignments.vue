@@ -279,8 +279,8 @@ const assignments = ref([
 ]);
 
 const courses = ref([
-	{ id: 1, title: "Dasturlash asoslari" },
-	{ id: 2, title: "Matematika asoslari" },
+	{ id: 1, title: "Informatika" },
+	{ id: 2, title: "Mobilografiya asoslari" },
 ]);
 
 // Options

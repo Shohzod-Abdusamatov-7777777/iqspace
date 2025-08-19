@@ -1,224 +1,224 @@
 <template>
 	<div class="teachers-page">
-		<div class="page-header">
-			<h1 class="page-title">O'qituvchilar</h1>
-			<div class="header-actions">
-				<button @click="showAddModal = true" class="btn btn-primary">
-					<i class="icon-plus"></i>
-					O'qituvchi qo'shish
-				</button>
-			</div>
-		</div>
+		<!-- Header -->
+		<NSpace justify="space-between" align="center" class="page-header">
+			<NH1 class="page-title">O'qituvchilar boshqaruvi</NH1>
+			<NButton type="primary" @click="showAddModal = true" size="large">
+				<template #icon>
+					<NIcon><PlusIcon /></NIcon>
+				</template>
+				Yangi o'qituvchi qo'shish
+			</NButton>
+		</NSpace>
 
-		<!-- Stats Cards -->
-		<div class="stats-grid">
-			<div class="stat-card">
-				<div class="stat-icon">
-					<i class="icon-users"></i>
-				</div>
-				<div class="stat-content">
-					<p class="stat-value">{{ totalTeachers }}</p>
-					<p class="stat-label">Jami o'qituvchilar</p>
-				</div>
-			</div>
-			<div class="stat-card">
-				<div class="stat-icon active">
-					<i class="icon-check-circle"></i>
-				</div>
-				<div class="stat-content">
-					<p class="stat-value">{{ activeTeachers }}</p>
-					<p class="stat-label">Faol o'qituvchilar</p>
-				</div>
-			</div>
-			<div class="stat-card">
-				<div class="stat-icon">
-					<i class="icon-book"></i>
-				</div>
-				<div class="stat-content">
-					<p class="stat-value">{{ totalCourses }}</p>
-					<p class="stat-label">Jami kurslar</p>
-				</div>
-			</div>
-			<div class="stat-card">
-				<div class="stat-icon">
-					<i class="icon-star"></i>
-				</div>
-				<div class="stat-content">
-					<p class="stat-value">{{ averageRating }}</p>
-					<p class="stat-label">O'rtacha reyting</p>
-				</div>
-			</div>
-		</div>
+		<!-- Statistics Cards -->
+		<NGrid :cols="4" :x-gap="16" :y-gap="16" class="stats-grid">
+			<NGi>
+				<NCard hoverable>
+					<NStatistic label="Jami o'qituvchilar" :value="totalTeachers">
+						<template #prefix>
+							<NIcon size="24" color="#18a058">
+								<UsersIcon />
+							</NIcon>
+						</template>
+					</NStatistic>
+				</NCard>
+			</NGi>
+			<NGi>
+				<NCard hoverable>
+					<NStatistic label="Faol o'qituvchilar" :value="activeTeachers">
+						<template #prefix>
+							<NIcon size="24" color="#18a058">
+								<CheckCircle2Icon />
+							</NIcon>
+						</template>
+					</NStatistic>
+				</NCard>
+			</NGi>
+			<NGi>
+				<NCard hoverable>
+					<NStatistic label="Jami kurslar" :value="totalCourses">
+						<template #prefix>
+							<NIcon size="24" color="#2080f0">
+								<BookOpenIcon />
+							</NIcon>
+						</template>
+					</NStatistic>
+				</NCard>
+			</NGi>
+			<NGi>
+				<NCard hoverable>
+					<NStatistic label="O'rtacha reyting" :value="averageRating">
+						<template #prefix>
+							<NIcon size="24" color="#f0a020">
+								<StarIcon />
+							</NIcon>
+						</template>
+					</NStatistic>
+				</NCard>
+			</NGi>
+		</NGrid>
 
-		<!-- Search and Filter -->
-		<div class="table-controls">
-			<div class="search-box">
-				<input v-model="searchQuery" type="text" placeholder="Ism yoki mutaxassislik bo'yicha qidirish..." class="search-input" />
-				<i class="icon-search"></i>
-			</div>
-			<div class="filters">
-				<select v-model="filterDepartment" class="filter-select">
-					<option value="">Barcha bo'limlar</option>
-					<option value="programming">Dasturlash</option>
-					<option value="design">Dizayn</option>
-					<option value="marketing">Marketing</option>
-					<option value="business">Biznes</option>
-				</select>
-				<select v-model="filterStatus" class="filter-select">
-					<option value="">Barcha holatlar</option>
-					<option value="active">Faol</option>
-					<option value="inactive">Nofaol</option>
-					<option value="vacation">Ta'tilda</option>
-				</select>
-			</div>
-		</div>
+		<!-- Search and Filters -->
+		<NCard class="filters-card">
+			<NSpace align="center" justify="space-between">
+				<NInput
+					v-model:value="searchQuery"
+					placeholder="Ism yoki mutaxassislik bo'yicha qidirish..."
+					size="large"
+					style="width: 300px"
+					clearable
+					@input="handleSearchChange"
+				>
+					<template #prefix>
+						<NIcon><SearchIcon /></NIcon>
+					</template>
+				</NInput>
+
+				<NSpace>
+					<NSelect
+						v-model:value="filterDepartment"
+						placeholder="Bo'lim"
+						size="large"
+						style="width: 200px"
+						:options="[{ label: 'Barcha bo\'limlar', value: '' }, ...departmentOptions]"
+						clearable
+					/>
+					<NSelect
+						v-model:value="filterStatus"
+						placeholder="Holati"
+						size="large"
+						style="width: 180px"
+						:options="[{ label: 'Barcha holatlar', value: '' }, ...statusOptions]"
+						clearable
+					/>
+				</NSpace>
+			</NSpace>
+		</NCard>
 
 		<!-- Teachers Table -->
-		<div class="table-container">
-			<table class="data-table">
-				<thead>
-					<tr>
-						<th>O'qituvchi</th>
-						<th>Mutaxassislik</th>
-						<th>Bo'lim</th>
-						<th>Kurslar</th>
-						<th>O'quvchilar</th>
-						<th>Reyting</th>
-						<th>Holati</th>
-						<th>Amallar</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr v-for="teacher in filteredTeachers" :key="teacher.id">
-						<td>
-							<div class="teacher-info">
-								<img :src="teacher.avatar || '/default-avatar.png'" :alt="teacher.name" class="teacher-avatar" />
-								<div>
-									<p class="teacher-name">{{ teacher.name }}</p>
-									<p class="teacher-email">{{ teacher.email }}</p>
-								</div>
-							</div>
-						</td>
-						<td>{{ teacher.specialization }}</td>
-						<td>{{ teacher.department }}</td>
-						<td>{{ teacher.courses }}</td>
-						<td>{{ teacher.students }}</td>
-						<td>
-							<div class="rating">
-								<i class="icon-star filled"></i>
-								<span>{{ teacher.rating }}</span>
-							</div>
-						</td>
-						<td>
-							<span :class="['status-badge', `status-${teacher.status}`]">
-								{{ getStatusText(teacher.status) }}
-							</span>
-						</td>
-						<td>
-							<div class="action-buttons">
-								<button @click="viewTeacher(teacher)" class="btn-icon">
-									<i class="icon-eye"></i>
-								</button>
-								<button @click="editTeacher(teacher)" class="btn-icon">
-									<i class="icon-edit"></i>
-								</button>
-								<button @click="deleteTeacher(teacher)" class="btn-icon danger">
-									<i class="icon-trash"></i>
-								</button>
-							</div>
-						</td>
-					</tr>
-				</tbody>
-			</table>
-		</div>
+		<NCard>
+			<NDataTable :columns="columns" :data="filteredTeachers" :pagination="paginationReactive" :loading="loading" :bordered="false" size="large" />
+		</NCard>
 
 		<!-- Add/Edit Teacher Modal -->
-		<div v-if="showAddModal" class="modal-overlay" @click.self="closeModal">
-			<div class="modal">
-				<div class="modal-header">
-					<h2>{{ editingTeacher ? "O'qituvchini tahrirlash" : "O'qituvchi qo'shish" }}</h2>
-					<button @click="closeModal" class="btn-close">×</button>
-				</div>
-				<form @submit.prevent="saveTeacher" class="teacher-form">
-					<div class="form-grid">
-						<div class="form-group">
-							<label>To'liq ism</label>
-							<input v-model="teacherForm.name" type="text" required />
-						</div>
-						<div class="form-group">
-							<label>Email</label>
-							<input v-model="teacherForm.email" type="email" required />
-						</div>
-						<div class="form-group">
-							<label>Telefon</label>
-							<input v-model="teacherForm.phone" type="tel" required />
-						</div>
-						<div class="form-group">
-							<label>Tug'ilgan sana</label>
-							<input v-model="teacherForm.birthDate" type="date" required />
-						</div>
-						<div class="form-group">
-							<label>Bo'lim</label>
-							<select v-model="teacherForm.department" required>
-								<option value="">Tanlang</option>
-								<option value="programming">Dasturlash</option>
-								<option value="design">Dizayn</option>
-								<option value="marketing">Marketing</option>
-								<option value="business">Biznes</option>
-							</select>
-						</div>
-						<div class="form-group">
-							<label>Mutaxassislik</label>
-							<input v-model="teacherForm.specialization" type="text" required />
-						</div>
-						<div class="form-group">
-							<label>Tajriba (yil)</label>
-							<input v-model.number="teacherForm.experience" type="number" min="0" required />
-						</div>
-						<div class="form-group">
-							<label>Holati</label>
-							<select v-model="teacherForm.status" required>
-								<option value="active">Faol</option>
-								<option value="inactive">Nofaol</option>
-								<option value="vacation">Ta'tilda</option>
-							</select>
-						</div>
-					</div>
-					<div class="form-group full-width">
-						<label>Biografiya</label>
-						<textarea v-model="teacherForm.bio" rows="4"></textarea>
-					</div>
-					<div class="modal-footer">
-						<button type="button" @click="closeModal" class="btn btn-secondary">Bekor qilish</button>
-						<button type="submit" class="btn btn-primary">
-							{{ editingTeacher ? "Saqlash" : "Qo'shish" }}
-						</button>
-					</div>
-				</form>
-			</div>
-		</div>
+		<NModal
+			v-model:show="showAddModal"
+			preset="card"
+			:title="editingTeacher ? 'O\'qituvchini tahrirlash' : 'Yangi o\'qituvchi qo\'shish'"
+			size="huge"
+			:closable="true"
+			:mask-closable="false"
+			:auto-focus="false"
+		>
+			<NForm :model="teacherForm" :rules="teacherFormRules" ref="formRef" label-placement="top" require-mark-placement="right-hanging">
+				<NGrid :cols="2" :x-gap="16" :y-gap="16">
+					<NFormItem label="To'liq ism" path="name">
+						<NInput v-model:value="teacherForm.name" placeholder="To'liq ismni kiriting" size="large" />
+					</NFormItem>
+					<NFormItem label="Email" path="email">
+						<NInput v-model:value="teacherForm.email" placeholder="Email manzilini kiriting" size="large" />
+					</NFormItem>
+					<NFormItem label="Telefon" path="phone">
+						<NInput v-model:value="teacherForm.phone" placeholder="Telefon raqamini kiriting" size="large" />
+					</NFormItem>
+					<NFormItem label="Tug'ilgan sana" path="birthDate">
+						<NDatePicker v-model:value="teacherForm.birthDate" type="date" placeholder="Sanani tanlang" size="large" style="width: 100%" />
+					</NFormItem>
+					<NFormItem label="Bo'lim" path="department">
+						<NSelect v-model:value="teacherForm.department" :options="departmentOptions" placeholder="Bo'limni tanlang" size="large" />
+					</NFormItem>
+					<NFormItem label="Mutaxassislik" path="specialization">
+						<NInput v-model:value="teacherForm.specialization" placeholder="Mutaxassislikni kiriting" size="large" />
+					</NFormItem>
+					<NFormItem label="Tajriba (yil)" path="experience">
+						<NInputNumber v-model:value="teacherForm.experience" :min="0" placeholder="Tajribani kiriting" size="large" style="width: 100%" />
+					</NFormItem>
+					<NFormItem label="Holati" path="status">
+						<NSelect v-model:value="teacherForm.status" :options="statusOptions" placeholder="Holatni tanlang" size="large" />
+					</NFormItem>
+				</NGrid>
+				<NFormItem label="Biografiya" path="bio">
+					<NInput v-model:value="teacherForm.bio" type="textarea" :rows="4" placeholder="Biografiyani kiriting" size="large" />
+				</NFormItem>
+			</NForm>
+
+			<template #footer>
+				<NSpace justify="end">
+					<NButton @click="closeModal" size="large">Bekor qilish</NButton>
+					<NButton @click="saveTeacher" type="primary" size="large" :loading="loading">
+						{{ editingTeacher ? "Saqlash" : "Qo'shish" }}
+					</NButton>
+				</NSpace>
+			</template>
+		</NModal>
 	</div>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted } from "vue";
-import { NButton, NIcon, NTag, NPopconfirm, NInput, NSelect, NModal, NCard, NForm, NFormItem, NGrid, NFormItemGi, useMessage } from "naive-ui";
-import { PlusIcon, SearchIcon, XIcon, EditIcon, Trash2Icon, StarIcon, UsersIcon, BookOpenIcon, CheckCircle2Icon, EyeIcon } from "lucide-vue-next";
-import { useTeachersStore } from "@/stores/teachers";
+import { ref, computed, onMounted, h, reactive } from "vue";
+import {
+	NButton,
+	NIcon,
+	NTag,
+	NPopconfirm,
+	NInput,
+	NSelect,
+	NModal,
+	NCard,
+	NForm,
+	NGrid,
+	NFormItem,
+	useMessage,
+	NSpace,
+	NH1,
+	NGi,
+	NStatistic,
+	NInputNumber,
+	NDatePicker,
+	NDataTable,
+	type DataTableColumns,
+} from "naive-ui";
+import { PlusIcon, SearchIcon, EditIcon, Trash2Icon, StarIcon, UsersIcon, BookOpenIcon, CheckCircle2Icon, EyeIcon } from "lucide-vue-next";
+import { adminService } from "@/services/api";
 
-const teachersStore = useTeachersStore();
+interface Teacher {
+	id: number;
+	name: string;
+	email: string;
+	phone: string;
+	birthDate: string;
+	department: string;
+	specialization: string;
+	experience: number;
+	status: string;
+	bio: string;
+	avatar?: string;
+	courses: number;
+	students: number;
+	rating: number;
+}
 
+const message = useMessage();
+
+// AdminService'dan foydalanamiz
+
+// Reactive state
+const teachers = ref<Teacher[]>([]);
+const loading = ref(false);
 const searchQuery = ref("");
 const filterDepartment = ref("");
 const filterStatus = ref("");
 const showAddModal = ref(false);
-const editingTeacher = ref(null);
+const editingTeacher = ref<Teacher | null>(null);
+const formRef = ref<any>();
 
 const teacherForm = ref({
+	id: 0,
 	name: "",
 	email: "",
 	phone: "",
-	birthDate: "",
+	birthDate: null as number | null,
 	department: "",
 	specialization: "",
 	experience: 0,
@@ -226,19 +226,46 @@ const teacherForm = ref({
 	bio: "",
 });
 
-const teachers = computed(() => teachersStore.teachers);
+// Options for selects
+const departmentOptions = [
+	{ label: "Dasturlash", value: "programming" },
+	{ label: "Dizayn", value: "design" },
+	{ label: "Marketing", value: "marketing" },
+	{ label: "Biznes", value: "business" },
+];
 
+const statusOptions = [
+	{ label: "Faol", value: "active" },
+	{ label: "Nofaol", value: "inactive" },
+	{ label: "Ta'tilda", value: "vacation" },
+];
+
+// Form rules
+const teacherFormRules = {
+	name: [{ required: true, message: "To'liq ism kiritilishi shart", trigger: ["input", "blur"] }],
+	email: [{ required: true, message: "Email kiritilishi shart", trigger: ["input", "blur"] }],
+	phone: [{ required: true, message: "Telefon raqami kiritilishi shart", trigger: ["input", "blur"] }],
+	department: [{ required: true, message: "Bo'lim tanlanishi shart", trigger: ["blur", "change"] }],
+	specialization: [{ required: true, message: "Mutaxassislik kiritilishi shart", trigger: ["input", "blur"] }],
+	experience: [{ required: true, message: "Tajriba kiritilishi shart", trigger: ["blur", "change"] }],
+};
+
+// Computed properties
 const totalTeachers = computed(() => teachers.value.length);
 const activeTeachers = computed(() => teachers.value.filter((t) => t.status === "active").length);
-const totalCourses = computed(() => teachers.value.reduce((sum, t) => sum + t.courses, 0));
+const totalCourses = computed(() => teachers.value.reduce((sum, t) => sum + (t.courses || 0), 0));
 const averageRating = computed(() => {
-	const total = teachers.value.reduce((sum, t) => sum + t.rating, 0);
-	return teachers.value.length ? (total / teachers.value.length).toFixed(1) : "0.0";
+	const validTeachers = teachers.value.filter((t) => t.rating && !isNaN(t.rating));
+	if (validTeachers.length === 0) return "0.0";
+
+	const total = validTeachers.reduce((sum, t) => sum + Number(t.rating), 0);
+	return (total / validTeachers.length).toFixed(1);
 });
 
 const filteredTeachers = computed(() => {
 	return teachers.value.filter((teacher) => {
 		const matchesSearch =
+			!searchQuery.value ||
 			teacher.name.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
 			teacher.specialization.toLowerCase().includes(searchQuery.value.toLowerCase()) ||
 			teacher.email.toLowerCase().includes(searchQuery.value.toLowerCase());
@@ -249,8 +276,31 @@ const filteredTeachers = computed(() => {
 	});
 });
 
+// Search qilganda API'ni qayta chaqirish
+function handleSearchChange() {
+	// Debounce qilish uchun timeout
+	setTimeout(() => {
+		fetchTeachers();
+	}, 500);
+}
+
+const paginationReactive = reactive({
+	page: 1,
+	pageSize: 10,
+	showSizePicker: true,
+	pageSizes: [10, 20, 50],
+	onChange: (page: number) => {
+		paginationReactive.page = page;
+	},
+	onUpdatePageSize: (pageSize: number) => {
+		paginationReactive.pageSize = pageSize;
+		paginationReactive.page = 1;
+	},
+});
+
+// Helper functions
 function getStatusText(status: string) {
-	const statusMap = {
+	const statusMap: Record<string, string> = {
 		active: "Faol",
 		inactive: "Nofaol",
 		vacation: "Ta'tilda",
@@ -258,33 +308,294 @@ function getStatusText(status: string) {
 	return statusMap[status] || status;
 }
 
-function viewTeacher(teacher) {
-	// Navigate to teacher details
+function getStatusType(status: string) {
+	const typeMap: Record<string, any> = {
+		active: "success",
+		inactive: "error",
+		vacation: "warning",
+	};
+	return typeMap[status] || "default";
+}
+
+function getDepartmentText(department: string) {
+	const deptOption = departmentOptions.find((d) => d.value === department);
+	return deptOption ? deptOption.label : department;
+}
+
+// Table columns
+const columns: DataTableColumns<Teacher> = [
+	{
+		title: "O'qituvchi",
+		key: "name",
+		render(row) {
+			return h(
+				"div",
+				{
+					class: "teacher-info",
+					style: { display: "flex", alignItems: "center", gap: "12px" },
+				},
+				[
+					h("img", {
+						src: row.avatar || "/default-avatar.png",
+						alt: row.name,
+						class: "teacher-avatar",
+						style: {
+							width: "40px",
+							height: "40px",
+							borderRadius: "50%",
+							objectFit: "cover",
+							flexShrink: "0",
+						},
+					}),
+					h("div", { style: { flex: "1", minWidth: "0" } }, [
+						h(
+							"div",
+							{
+								style: {
+									fontWeight: "500",
+									color: "#1f2937",
+									whiteSpace: "nowrap",
+									overflow: "hidden",
+									textOverflow: "ellipsis",
+								},
+							},
+							row.name,
+						),
+						h(
+							"div",
+							{
+								style: {
+									fontSize: "12px",
+									color: "#6b7280",
+									whiteSpace: "nowrap",
+									overflow: "hidden",
+									textOverflow: "ellipsis",
+								},
+							},
+							row.email,
+						),
+					]),
+				],
+			);
+		},
+	},
+	{
+		title: "Mutaxassislik",
+		key: "specialization",
+	},
+	{
+		title: "Bo'lim",
+		key: "department",
+		render(row) {
+			return getDepartmentText(row.department);
+		},
+	},
+	{
+		title: "Kurslar",
+		key: "courses",
+	},
+	{
+		title: "O'quvchilar",
+		key: "students",
+	},
+	{
+		title: "Reyting",
+		key: "rating",
+		render(row) {
+			return h("div", { class: "rating", style: { display: "flex", alignItems: "center", gap: "4px" } }, [
+				h(NIcon, { color: "#fbbf24" }, () => h(StarIcon)),
+				h("span", row.rating),
+			]);
+		},
+	},
+	{
+		title: "Holati",
+		key: "status",
+		render(row) {
+			return h(NTag, { type: getStatusType(row.status), size: "small" }, () => getStatusText(row.status));
+		},
+	},
+	{
+		title: "Amallar",
+		key: "actions",
+		render(row) {
+			return h("div", { class: "action-buttons", style: { display: "flex", gap: "8px" } }, [
+				h(
+					NButton,
+					{
+						size: "small",
+						quaternary: true,
+						circle: true,
+						onClick: () => viewTeacher(row),
+					},
+					() => h(NIcon, () => h(EyeIcon)),
+				),
+				h(
+					NButton,
+					{
+						size: "small",
+						quaternary: true,
+						circle: true,
+						onClick: () => editTeacher(row),
+					},
+					() => h(NIcon, () => h(EditIcon)),
+				),
+				h(
+					NPopconfirm,
+					{
+						onPositiveClick: () => deleteTeacher(row),
+						positiveText: "Ha",
+						negativeText: "Yo'q",
+					},
+					{
+						trigger: () =>
+							h(
+								NButton,
+								{
+									size: "small",
+									quaternary: true,
+									circle: true,
+								},
+								() => h(NIcon, { color: "#dc2626" }, () => h(Trash2Icon)),
+							),
+						default: () => `"${row.name}" o'qituvchini o'chirmoqchimisiz?`,
+					},
+				),
+			]);
+		},
+	},
+];
+
+// CRUD operations
+async function fetchTeachers() {
+	try {
+		loading.value = true;
+
+		// AdminService ishlatish
+		const response = await adminService.getUsers(1, 100, searchQuery.value, "teacher");
+		const apiTeachers = (response as any).data || response || [];
+
+		// JSON server ma'lumotlarini Teacher interfaceiga mos qilish
+		teachers.value = apiTeachers.map((user: any) => ({
+			id: user.id,
+			name: user.name,
+			email: user.email,
+			phone: user.phone,
+			birthDate: user.birth_date || "1990-01-01",
+			department: user.subjects?.[0] || "programming",
+			specialization: user.subjects?.join(", ") || "General Teaching",
+			experience: parseInt(user.experience?.replace(" yil", "")) || 5,
+			status: user.status,
+			bio: user.bio,
+			avatar:
+				user.avatar?.length === 2
+					? `https://api.dicebear.com/7.x/initials/svg?seed=${encodeURIComponent(user.name)}&backgroundColor=3b82f6&radius=50`
+					: user.avatar || `https://api.dicebear.com/7.x/personas/svg?seed=${encodeURIComponent(user.name)}`,
+			courses: Math.floor(Math.random() * 8) + 1, // Random kurslar soni
+			students: Math.floor(Math.random() * 150) + 20, // Random o'quvchilar soni
+			rating: parseFloat((Math.random() * 1.5 + 3.5).toFixed(1)), // 3.5-5.0 oralig'ida rating
+		}));
+	} catch (error) {
+		console.error("Error fetching teachers:", error);
+		message.error("O'qituvchilarni yuklashda xatolik yuz berdi");
+		teachers.value = [];
+	} finally {
+		loading.value = false;
+	}
+}
+
+function viewTeacher(teacher: Teacher) {
+	// Navigate to teacher details or show detailed view
+	message.info(`${teacher.name} o'qituvchisining ma'lumotlari ko'rilmoqda`);
 	console.log("View teacher:", teacher);
 }
 
-function editTeacher(teacher) {
+function editTeacher(teacher: Teacher) {
 	editingTeacher.value = teacher;
-	teacherForm.value = { ...teacher };
+	teacherForm.value = {
+		id: teacher.id,
+		name: teacher.name,
+		email: teacher.email,
+		phone: teacher.phone,
+		birthDate: teacher.birthDate ? new Date(teacher.birthDate).getTime() : null,
+		department: teacher.department,
+		specialization: teacher.specialization,
+		experience: teacher.experience,
+		status: teacher.status,
+		bio: teacher.bio,
+	};
 	showAddModal.value = true;
 }
 
-async function deleteTeacher(teacher) {
-	if (confirm(`"${teacher.name}" o'qituvchini o'chirmoqchimisiz?`)) {
-		await teachersStore.deleteTeacher(teacher.id);
+async function deleteTeacher(teacher: Teacher) {
+	try {
+		loading.value = true;
+
+		// AdminService ishlatish
+		await adminService.deleteUser(teacher.id);
+		const success = true;
+
+		if (success) {
+			await fetchTeachers();
+			message.success(`${teacher.name} o'qituvchisi muvaffaqiyatli o'chirildi`);
+		} else {
+			throw new Error("Delete failed");
+		}
+	} catch (error) {
+		console.error("Error deleting teacher:", error);
+		message.error("O'qituvchini o'chirishda xatolik yuz berdi");
+	} finally {
+		loading.value = false;
 	}
 }
 
 async function saveTeacher() {
 	try {
+		await formRef.value?.validate();
+		loading.value = true;
+
+		// JSON server uchun format
+		const formData = {
+			name: teacherForm.value.name,
+			email: teacherForm.value.email,
+			phone: teacherForm.value.phone,
+			birth_date: teacherForm.value.birthDate ? new Date(teacherForm.value.birthDate).toISOString().split("T")[0] : "",
+			subjects: [teacherForm.value.specialization],
+			experience: `${teacherForm.value.experience} yil`,
+			qualification: "Professional Teacher",
+			status: teacherForm.value.status,
+			bio: teacherForm.value.bio,
+			role: "teacher",
+			avatar: teacherForm.value.name
+				.split(" ")
+				.map((n) => n[0])
+				.join("")
+				.toUpperCase(),
+			created_at: new Date().toISOString(),
+			last_login: new Date().toISOString(),
+		};
+
 		if (editingTeacher.value) {
-			await teachersStore.updateTeacher(teacherForm.value.id, teacherForm.value);
+			// AdminService ishlatish - update
+			await adminService.updateUser(editingTeacher.value.id, formData as any);
+			message.success("O'qituvchi ma'lumotlari muvaffaqiyatli yangilandi");
 		} else {
-			await teachersStore.createTeacher(teacherForm.value);
+			// AdminService ishlatish - create
+			await adminService.createUser(formData as any);
+			message.success("Yangi o'qituvchi muvaffaqiyatli qo'shildi");
 		}
+
+		await fetchTeachers();
 		closeModal();
 	} catch (error) {
 		console.error("Error saving teacher:", error);
+		if (error && typeof error === "object" && "message" in error) {
+			// Form validation error
+			return;
+		}
+		message.error("O'qituvchini saqlashda xatolik yuz berdi");
+	} finally {
+		loading.value = false;
 	}
 }
 
@@ -292,10 +603,11 @@ function closeModal() {
 	showAddModal.value = false;
 	editingTeacher.value = null;
 	teacherForm.value = {
+		id: 0,
 		name: "",
 		email: "",
 		phone: "",
-		birthDate: "",
+		birthDate: null,
 		department: "",
 		specialization: "",
 		experience: 0,
@@ -304,8 +616,9 @@ function closeModal() {
 	};
 }
 
+// Lifecycle
 onMounted(async () => {
-	await teachersStore.fetchTeachers();
+	await fetchTeachers();
 });
 </script>
 
@@ -315,9 +628,6 @@ onMounted(async () => {
 }
 
 .page-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
 	margin-bottom: 32px;
 }
 
@@ -325,133 +635,22 @@ onMounted(async () => {
 	font-size: 28px;
 	font-weight: 600;
 	color: #1f2937;
+	margin: 0;
 }
 
 .stats-grid {
-	display: grid;
-	grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-	gap: 20px;
 	margin-bottom: 32px;
 }
 
-.stat-card {
-	background: white;
-	border-radius: 12px;
-	padding: 24px;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-	display: flex;
-	align-items: center;
-	gap: 16px;
-}
-
-.stat-icon {
-	width: 56px;
-	height: 56px;
-	background: #f3f4f6;
-	border-radius: 12px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	font-size: 24px;
-	color: #6b7280;
-}
-
-.stat-icon.active {
-	background: #10b981;
-	color: white;
-}
-
-.stat-content {
-	flex: 1;
-}
-
-.stat-value {
-	font-size: 28px;
-	font-weight: 600;
-	color: #1f2937;
-	margin: 0;
-}
-
-.stat-label {
-	font-size: 14px;
-	color: #6b7280;
-	margin: 0;
-}
-
-.table-controls {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	gap: 16px;
+.filters-card {
 	margin-bottom: 24px;
-}
-
-.search-box {
-	position: relative;
-	flex: 1;
-	max-width: 400px;
-}
-
-.search-input {
-	width: 100%;
-	padding: 10px 16px 10px 44px;
-	border: 1px solid #e5e7eb;
-	border-radius: 8px;
-	font-size: 14px;
-}
-
-.search-box i {
-	position: absolute;
-	left: 16px;
-	top: 50%;
-	transform: translateY(-50%);
-	color: #6b7280;
-}
-
-.filters {
-	display: flex;
-	gap: 12px;
-}
-
-.filter-select {
-	padding: 10px 16px;
-	border: 1px solid #e5e7eb;
-	border-radius: 8px;
-	font-size: 14px;
-	background: white;
-}
-
-.table-container {
-	background: white;
-	border-radius: 12px;
-	overflow: hidden;
-	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.data-table {
-	width: 100%;
-	border-collapse: collapse;
-}
-
-.data-table th {
-	background: #f9fafb;
-	padding: 12px 16px;
-	text-align: left;
-	font-weight: 500;
-	color: #6b7280;
-	font-size: 14px;
-	border-bottom: 1px solid #e5e7eb;
-}
-
-.data-table td {
-	padding: 16px;
-	border-bottom: 1px solid #f3f4f6;
 }
 
 .teacher-info {
 	display: flex;
 	align-items: center;
 	gap: 12px;
+	min-width: 0;
 }
 
 .teacher-avatar {
@@ -459,18 +658,7 @@ onMounted(async () => {
 	height: 40px;
 	border-radius: 50%;
 	object-fit: cover;
-}
-
-.teacher-name {
-	font-weight: 500;
-	color: #1f2937;
-	margin: 0;
-}
-
-.teacher-email {
-	font-size: 12px;
-	color: #6b7280;
-	margin: 0;
+	flex-shrink: 0;
 }
 
 .rating {
@@ -479,187 +667,8 @@ onMounted(async () => {
 	gap: 4px;
 }
 
-.icon-star.filled {
-	color: #fbbf24;
-}
-
-.status-badge {
-	display: inline-flex;
-	align-items: center;
-	padding: 4px 12px;
-	border-radius: 20px;
-	font-size: 12px;
-	font-weight: 500;
-}
-
-.status-active {
-	background: #d1fae5;
-	color: #065f46;
-}
-
-.status-inactive {
-	background: #fee2e2;
-	color: #991b1b;
-}
-
-.status-vacation {
-	background: #e0e7ff;
-	color: #3730a3;
-}
-
 .action-buttons {
 	display: flex;
 	gap: 8px;
-}
-
-.btn-icon {
-	width: 36px;
-	height: 36px;
-	border: 1px solid #e5e7eb;
-	background: white;
-	border-radius: 8px;
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	cursor: pointer;
-	transition: all 0.2s;
-}
-
-.btn-icon:hover {
-	background: #f3f4f6;
-}
-
-.btn-icon.danger:hover {
-	background: #fee2e2;
-	border-color: #fecaca;
-	color: #dc2626;
-}
-
-.btn {
-	padding: 10px 20px;
-	border-radius: 8px;
-	font-size: 14px;
-	font-weight: 500;
-	cursor: pointer;
-	transition: all 0.2s;
-	border: none;
-	display: inline-flex;
-	align-items: center;
-	gap: 8px;
-}
-
-.btn-primary {
-	background: #3b82f6;
-	color: white;
-}
-
-.btn-primary:hover {
-	background: #2563eb;
-}
-
-.btn-secondary {
-	background: #f3f4f6;
-	color: #1f2937;
-}
-
-.btn-secondary:hover {
-	background: #e5e7eb;
-}
-
-/* Modal Styles */
-.modal-overlay {
-	position: fixed;
-	inset: 0;
-	background: rgba(0, 0, 0, 0.5);
-	display: flex;
-	align-items: center;
-	justify-content: center;
-	z-index: 1000;
-}
-
-.modal {
-	background: white;
-	border-radius: 16px;
-	width: 90%;
-	max-width: 600px;
-	max-height: 90vh;
-	overflow-y: auto;
-}
-
-.modal-header {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	padding: 24px;
-	border-bottom: 1px solid #e5e7eb;
-}
-
-.modal-header h2 {
-	margin: 0;
-	font-size: 20px;
-	font-weight: 600;
-}
-
-.btn-close {
-	width: 32px;
-	height: 32px;
-	border: none;
-	background: none;
-	font-size: 24px;
-	color: #6b7280;
-	cursor: pointer;
-	border-radius: 8px;
-}
-
-.btn-close:hover {
-	background: #f3f4f6;
-}
-
-.teacher-form {
-	padding: 24px;
-}
-
-.form-grid {
-	display: grid;
-	grid-template-columns: repeat(2, 1fr);
-	gap: 16px;
-	margin-bottom: 16px;
-}
-
-.form-group {
-	display: flex;
-	flex-direction: column;
-	gap: 8px;
-}
-
-.form-group.full-width {
-	grid-column: 1 / -1;
-}
-
-.form-group label {
-	font-size: 14px;
-	font-weight: 500;
-	color: #374151;
-}
-
-.form-group input,
-.form-group select,
-.form-group textarea {
-	padding: 10px 16px;
-	border: 1px solid #e5e7eb;
-	border-radius: 8px;
-	font-size: 14px;
-	background: white;
-}
-
-.form-group textarea {
-	resize: vertical;
-}
-
-.modal-footer {
-	display: flex;
-	justify-content: flex-end;
-	gap: 12px;
-	margin-top: 24px;
 }
 </style>

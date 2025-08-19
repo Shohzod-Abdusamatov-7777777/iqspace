@@ -122,7 +122,7 @@ src/
 
 ### Rejalashtirilgan xususiyatlar
 - [ ] Ko'proq til qo'llab-quvvatlash (rus, ingliz)
-- [ ] Murakkab buyruqlar (masalan: "Matematika kursidagi topshiriqlarni ko'rsat")
+- [ ] Murakkab buyruqlar (masalan: "Mobilografiya kursidagi topshiriqlarni ko'rsat")
 - [ ] Ovozli javoblar (TTS - Text to Speech)
 - [ ] Offline rejimi
 - [ ] Buyruqlarni sozlash imkoniyati

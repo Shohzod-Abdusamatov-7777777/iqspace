@@ -227,7 +227,7 @@ const availableCourses = ref<Course[]>([]);
 const mockCourses = [
 	{
 		id: 1,
-		title: "Dasturlash asoslari",
+		title: "Informatika",
 		teacher_name: "Jamshid Doniyorov",
 		color: "#4361ee",
 		price: 1200000,
@@ -236,14 +236,14 @@ const mockCourses = [
 	},
 	{
 		id: 2,
-		title: "Matematika asoslari",
+		title: "Mobilografiya asoslari",
 		teacher_name: "Dilfuza Rahimova",
 		color: "#4895ef",
 		price: 800000,
 		students_count: 187,
 		duration: "16 hafta",
 	},
-	{ id: 3, title: "Kimyo asoslari", teacher_name: "Shodmon Yusupov", color: "#3f37c9", price: 900000, students_count: 132, duration: "14 hafta" },
+	{ id: 3, title: "Rassomchilik asoslari", teacher_name: "Shodmon Yusupov", color: "#3f37c9", price: 900000, students_count: 132, duration: "14 hafta" },
 	{ id: 4, title: "Biologiya asoslari", teacher_name: "Zebo Karimova", color: "#7209b7", price: 750000, students_count: 98, duration: "12 hafta" },
 ];
 
@@ -258,8 +258,8 @@ const statusOptions = [
 const subjectOptions = [
 	{ label: "Barcha fanlar", value: "all" },
 	{ label: "Dasturlash", value: "Dasturlash" },
-	{ label: "Matematika", value: "Matematika" },
-	{ label: "Kimyo", value: "Kimyo" },
+	{ label: "Mobilografiya", value: "Mobilografiya" },
+	{ label: "Rassomchilik", value: "Rassomchilik" },
 	{ label: "Biologiya", value: "Biologiya" },
 ];
 
@@ -295,7 +295,7 @@ const loadMyCourses = async () => {
 				student_id: 4,
 				student_name: "Ali Karimov",
 				course_id: 1,
-				course_title: "Dasturlash asoslari",
+				course_title: "Informatika",
 				enrolled_at: "2024-02-05T00:00:00Z",
 				status: "active",
 				progress: 65,
@@ -305,7 +305,7 @@ const loadMyCourses = async () => {
 				student_id: 4,
 				student_name: "Ali Karimov",
 				course_id: 2,
-				course_title: "Matematika asoslari",
+				course_title: "Mobilografiya asoslari",
 				enrolled_at: "2024-02-10T00:00:00Z",
 				status: "active",
 				progress: 40,
@@ -315,7 +315,7 @@ const loadMyCourses = async () => {
 				student_id: 4,
 				student_name: "Ali Karimov",
 				course_id: 3,
-				course_title: "Kimyo asoslari",
+				course_title: "Rassomchilik asoslari",
 				enrolled_at: "2024-03-01T00:00:00Z",
 				status: "completed",
 				progress: 100,

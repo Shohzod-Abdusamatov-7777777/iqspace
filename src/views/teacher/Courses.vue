@@ -244,7 +244,7 @@ const courseForm = reactive({
 const mockCourses: Course[] = [
 	{
 		id: 1,
-		title: "Dasturlash asoslari",
+		title: "Informatika",
 		description: "Python dasturlash tilini noldan o'rganish uchun mukammal kurs",
 		teacher_id: 2,
 		teacher_name: "Jamshid Doniyorov",
@@ -281,8 +281,8 @@ const mockCourses: Course[] = [
 // Options
 const subjectOptions = [
 	{ label: "Dasturlash", value: "Dasturlash" },
-	{ label: "Matematika", value: "Matematika" },
-	{ label: "Kimyo", value: "Kimyo" },
+	{ label: "Mobilografiya", value: "Mobilografiya" },
+	{ label: "Rassomchilik", value: "Rassomchilik" },
 	{ label: "Biologiya", value: "Biologiya" },
 	{ label: "Fizika", value: "Fizika" },
 ];

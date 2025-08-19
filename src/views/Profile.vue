@@ -250,8 +250,8 @@ const securityForm = reactive({
 // Options
 const subjectOptions = [
 	{ label: "Dasturlash", value: "Dasturlash" },
-	{ label: "Matematika", value: "Matematika" },
-	{ label: "Kimyo", value: "Kimyo" },
+	{ label: "Mobilografiya", value: "Mobilografiya" },
+	{ label: "Rassomchilik", value: "Rassomchilik" },
 	{ label: "Biologiya", value: "Biologiya" },
 	{ label: "Fizika", value: "Fizika" },
 	{ label: "Tarix", value: "Tarix" },

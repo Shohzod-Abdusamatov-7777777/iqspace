@@ -62,9 +62,9 @@
 		<!-- Search and Filters -->
 		<n-card class="filters-card">
 			<n-space align="center" justify="space-between">
-				<n-input 
-					v-model:value="pagination.search" 
-					placeholder="Kurs nomi bo'yicha qidirish..." 
+				<n-input
+					v-model:value="pagination.search"
+					placeholder="Kurs nomi bo'yicha qidirish..."
 					size="large"
 					style="width: 300px"
 					clearable
@@ -74,17 +74,14 @@
 						<n-icon><SearchIcon /></n-icon>
 					</template>
 				</n-input>
-				
+
 				<n-space>
 					<n-select
 						v-model:value="filterCategory"
 						placeholder="Kategoriya"
 						size="large"
 						style="width: 200px"
-						:options="[
-							{ label: 'Barcha kategoriyalar', value: '' },
-							...categoryOptions
-						]"
+						:options="[{ label: 'Barcha kategoriyalar', value: '' }, ...categoryOptions]"
 						clearable
 						@update:value="handleFilterChange"
 					/>
@@ -93,10 +90,7 @@
 						placeholder="Holati"
 						size="large"
 						style="width: 180px"
-						:options="[
-							{ label: 'Barcha holatlar', value: '' },
-							...statusOptions
-						]"
+						:options="[{ label: 'Barcha holatlar', value: '' }, ...statusOptions]"
 						clearable
 						@update:value="handleFilterChange"
 					/>
@@ -106,19 +100,12 @@
 
 		<!-- Courses Table -->
 		<n-card>
-			<VTable
-				:columns="columns"
-				:data="courses"
-				:pagination="pagination"
-				:total-items="totalItems"
-				:loading="loading"
-				@get-list="fetchCoursesList"
-			/>
+			<VTable :columns="columns" :data="courses" :pagination="pagination" :total-items="totalItems" :loading="loading" @get-list="fetchCoursesList" />
 		</n-card>
 
 		<!-- Add/Edit Course Modal -->
-		<n-modal 
-			v-model:show="showAddModal" 
+		<n-modal
+			v-model:show="showAddModal"
 			preset="card"
 			:title="editingCourse ? 'Kursni tahrirlash' : 'Yangi kurs qo\'shish'"
 			size="huge"
@@ -126,33 +113,18 @@
 			:mask-closable="false"
 			:auto-focus="false"
 		>
-			<n-form 
-				:model="courseForm" 
-				:rules="courseFormRules" 
-				ref="formRef" 
-				label-placement="top"
-				require-mark-placement="right-hanging"
-			>
+			<n-form :model="courseForm" :rules="courseFormRules" ref="formRef" label-placement="top" require-mark-placement="right-hanging">
 				<n-grid :cols="2" :x-gap="16" :y-gap="16">
 					<n-form-item label="Kurs nomi" path="title">
-						<n-input 
-							v-model:value="courseForm.title" 
-							placeholder="Kurs nomini kiriting"
-							size="large"
-						/>
+						<n-input v-model:value="courseForm.title" placeholder="Kurs nomini kiriting" size="large" />
 					</n-form-item>
 					<n-form-item label="Fan" path="subject">
-						<n-select 
-							v-model:value="courseForm.subject" 
-							:options="categoryOptions" 
-							placeholder="Fanni tanlang"
-							size="large"
-						/>
+						<n-select v-model:value="courseForm.subject" :options="categoryOptions" placeholder="Fanni tanlang" size="large" />
 					</n-form-item>
 					<n-form-item label="O'qituvchi" path="teacher_id">
-						<n-select 
-							v-model:value="courseForm.teacher_id" 
-							:options="teacherOptions" 
+						<n-select
+							v-model:value="courseForm.teacher_id"
+							:options="teacherOptions"
 							placeholder="O'qituvchini tanlang"
 							size="large"
 							filterable
@@ -160,15 +132,11 @@
 						/>
 					</n-form-item>
 					<n-form-item label="Davomiyligi" path="duration">
-						<n-input 
-							v-model:value="courseForm.duration" 
-							placeholder="Masalan: 12 hafta"
-							size="large"
-						/>
+						<n-input v-model:value="courseForm.duration" placeholder="Masalan: 12 hafta" size="large" />
 					</n-form-item>
 					<n-form-item label="Narxi (UZS)" path="price">
-						<n-input-number 
-							v-model:value="courseForm.price" 
+						<n-input-number
+							v-model:value="courseForm.price"
 							:min="0"
 							:format="formatPriceInput"
 							:parse="parsePriceInput"
@@ -178,36 +146,18 @@
 						/>
 					</n-form-item>
 					<n-form-item label="Holati" path="status">
-						<n-select 
-							v-model:value="courseForm.status" 
-							:options="statusOptions" 
-							placeholder="Holatni tanlang"
-							size="large"
-						/>
+						<n-select v-model:value="courseForm.status" :options="statusOptions" placeholder="Holatni tanlang" size="large" />
 					</n-form-item>
 				</n-grid>
 				<n-form-item label="Kurs tavsifi" path="description">
-					<n-input 
-						v-model:value="courseForm.description" 
-						type="textarea" 
-						:rows="4" 
-						placeholder="Kurs haqida batafsil ma'lumot..."
-						size="large"
-					/>
+					<n-input v-model:value="courseForm.description" type="textarea" :rows="4" placeholder="Kurs haqida batafsil ma'lumot..." size="large" />
 				</n-form-item>
 			</n-form>
-			
+
 			<template #footer>
 				<n-space justify="end">
-					<n-button @click="closeModal" size="large">
-						Bekor qilish
-					</n-button>
-					<n-button 
-						type="primary" 
-						@click="saveCourse" 
-						:loading="saving"
-						size="large"
-					>
+					<n-button @click="closeModal" size="large"> Bekor qilish </n-button>
+					<n-button type="primary" @click="saveCourse" :loading="saving" size="large">
 						{{ editingCourse ? "Saqlash" : "Qo'shish" }}
 					</n-button>
 				</n-space>
@@ -218,17 +168,17 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, h, watch } from "vue";
-import { 
-	NButton, 
-	NIcon, 
-	NTag, 
-	NInput, 
-	NSelect, 
-	NModal, 
-	NCard, 
-	NForm, 
-	NFormItem, 
-	NGrid, 
+import {
+	NButton,
+	NIcon,
+	NTag,
+	NInput,
+	NSelect,
+	NModal,
+	NCard,
+	NForm,
+	NFormItem,
+	NGrid,
 	NGi,
 	NSpace,
 	NStatistic,
@@ -236,23 +186,14 @@ import {
 	NInputNumber,
 	NPopconfirm,
 	useMessage,
-	type DataTableColumns
+	type DataTableColumns,
 } from "naive-ui";
-import { 
-	PlusIcon, 
-	SearchIcon, 
-	StarIcon, 
-	UsersIcon, 
-	BookOpenIcon, 
-	CheckCircle2Icon,
-	EyeIcon,
-	EditIcon,
-	Trash2Icon
-} from "lucide-vue-next";
+import { PlusIcon, SearchIcon, StarIcon, UsersIcon, BookOpenIcon, CheckCircle2Icon, EyeIcon, EditIcon, Trash2Icon } from "lucide-vue-next";
 import VTable from "@/components/ui/VTable.vue";
 import usePagination from "@/composables/usePagination";
 import { useCoursesStore } from "@/stores/courses";
 import { useTeachersStore } from "@/stores/teachers";
+import { adminService } from "@/services/api";
 
 const message = useMessage();
 const coursesStore = useCoursesStore();
@@ -261,9 +202,9 @@ const teachersStore = useTeachersStore();
 // Pagination
 const { pagination, totalItems } = usePagination({
 	pageSize: 10,
-	search: '',
-	sortBy: 'name',
-	orderType: 'asc'
+	search: "",
+	sortBy: "name",
+	orderType: "asc",
 });
 
 // Reactive state
@@ -289,7 +230,7 @@ const courseForm = ref({
 	status: "active" as CourseStatus,
 	description: "",
 	color: "#3b82f6",
-	icon: "book"
+	icon: "book",
 });
 
 // Computed properties
@@ -306,11 +247,11 @@ const columns: DataTableColumns = [
 		sortOrder: false,
 		sorter: true,
 		render: (row: any) => {
-			return h('div', { class: 'course-info' }, [
-				h('div', { class: 'course-name' }, row.title || ''),
-				h('div', { class: 'course-code' }, `ID: ${row.id}`)
+			return h("div", { class: "course-info" }, [
+				h("div", { class: "course-name" }, row.title || ""),
+				h("div", { class: "course-code" }, `ID: ${row.id}`),
 			]);
-		}
+		},
 	},
 	{
 		title: "Kategoriya",
@@ -318,9 +259,9 @@ const columns: DataTableColumns = [
 		sortOrder: false,
 		sorter: true,
 		render: (row: any) => {
-			const categoryLabel = row.subject || 'Noma\'lum';
-			return h(NTag, { type: 'info' }, { default: () => categoryLabel });
-		}
+			const categoryLabel = row.subject || "Noma'lum";
+			return h(NTag, { type: "info" }, { default: () => categoryLabel });
+		},
 	},
 	{
 		title: "O'qituvchi",
@@ -328,29 +269,29 @@ const columns: DataTableColumns = [
 		sortOrder: false,
 		sorter: true,
 		render: (row: any) => {
-			return row.teacher_name || 'Noma\'lum';
-		}
+			return row.teacher_name || "Noma'lum";
+		},
 	},
 	{
 		title: "O'quvchilar",
 		key: "students_count",
 		sortOrder: false,
 		sorter: true,
-		render: (row: any) => `${row.students_count || 0}`
+		render: (row: any) => `${row.students_count || 0}`,
 	},
 	{
 		title: "Davomiyligi",
 		key: "duration",
 		sortOrder: false,
 		sorter: true,
-		render: (row: any) => row.duration || 'Noma\'lum'
+		render: (row: any) => row.duration || "Noma'lum",
 	},
 	{
 		title: "Narxi",
 		key: "price",
 		sortOrder: false,
 		sorter: true,
-		render: (row: any) => formatPrice(row.price || 0)
+		render: (row: any) => formatPrice(row.price || 0),
 	},
 	{
 		title: "Holati",
@@ -359,68 +300,85 @@ const columns: DataTableColumns = [
 		sorter: true,
 		render: (row: any) => {
 			const statusConfig = {
-				active: { type: 'success', label: 'Faol' },
-				draft: { type: 'warning', label: 'Qoralama' },
-				archived: { type: 'default', label: 'Arxivlangan' }
+				active: { type: "success", label: "Faol" },
+				draft: { type: "warning", label: "Qoralama" },
+				archived: { type: "default", label: "Arxivlangan" },
 			} as const;
-			
-			const config = statusConfig[row.status as keyof typeof statusConfig] || { type: 'default', label: row.status };
+
+			const config = statusConfig[row.status as keyof typeof statusConfig] || { type: "default", label: row.status };
 			return h(NTag, { type: config.type }, { default: () => config.label });
-		}
+		},
 	},
 	{
 		title: "Amallar",
 		key: "actions",
 		width: 150,
 		render: (row: any) => {
-			return h('div', { class: 'action-buttons' }, [
-				h(NButton, {
-					size: 'small',
-					type: 'info',
-					ghost: true,
-					title: 'Ko\'rish',
-					onClick: () => viewCourse(row)
-				}, {
-					icon: () => h(NIcon, { component: EyeIcon })
-				}),
-				h(NButton, {
-					size: 'small',
-					type: 'primary',
-					ghost: true,
-					title: 'Tahrirlash',
-					onClick: () => editCourse(row),
-					style: { marginLeft: '8px' }
-				}, {
-					icon: () => h(NIcon, { component: EditIcon })
-				}),
-				h(NPopconfirm, {
-					showIcon: false,
-					onPositiveClick: () => deleteCourse(row),
-					positiveText: 'Ha, o\'chirish',
-					negativeText: 'Bekor qilish',
-					style: { marginLeft: '8px' }
-				}, {
-					trigger: () => h(NButton, {
-						size: 'small',
-						type: 'error',
+			return h("div", { class: "action-buttons" }, [
+				h(
+					NButton,
+					{
+						size: "small",
+						type: "info",
 						ghost: true,
-						title: 'O\'chirish'
-					}, {
-						icon: () => h(NIcon, { component: Trash2Icon })
-					}),
-					default: () => `"${row.title}" kursini o'chirmoqchimisiz?`
-				})
+						title: "Ko'rish",
+						onClick: () => viewCourse(row),
+					},
+					{
+						icon: () => h(NIcon, { component: EyeIcon }),
+					},
+				),
+				h(
+					NButton,
+					{
+						size: "small",
+						type: "primary",
+						ghost: true,
+						title: "Tahrirlash",
+						onClick: () => editCourse(row),
+						style: { marginLeft: "8px" },
+					},
+					{
+						icon: () => h(NIcon, { component: EditIcon }),
+					},
+				),
+				h(
+					NPopconfirm,
+					{
+						showIcon: false,
+						onPositiveClick: () => deleteCourse(row),
+						positiveText: "Ha, o'chirish",
+						negativeText: "Bekor qilish",
+						style: { marginLeft: "8px" },
+					},
+					{
+						trigger: () =>
+							h(
+								NButton,
+								{
+									size: "small",
+									type: "error",
+									ghost: true,
+									title: "O'chirish",
+								},
+								{
+									icon: () => h(NIcon, { component: Trash2Icon }),
+								},
+							),
+						default: () => `"${row.title}" kursini o'chirmoqchimisiz?`,
+					},
+				),
 			]);
-		}
-	}
+		},
+	},
 ];
 
 // Options
 const categoryOptions = [
 	{ label: "Dasturlash", value: "Dasturlash" },
-	{ label: "Matematika", value: "Matematika" },
+	{ label: "Mobilografiya", value: "Mobilografiya" },
 	{ label: "Fizika", value: "Fizika" },
-	{ label: "Kimyo", value: "Kimyo" },
+	{ label: "Rassomchilik", value: "Rassomchilik" },
 	{ label: "Biologiya", value: "Biologiya" },
 	{ label: "Ingliz tili", value: "Ingliz tili" },
 ];
@@ -433,9 +391,7 @@ const statusOptions = [
 
 type CourseStatus = "active" | "draft" | "archived";
 
-const teacherOptions = computed(() => 
-	teachers.value.map((t: any) => ({ label: t.name, value: t.id }))
-);
+const teacherOptions = computed(() => teachers.value.map((t: any) => ({ label: t.name, value: t.id })));
 
 // Form validation rules
 const courseFormRules = {
@@ -463,15 +419,15 @@ async function fetchCoursesList(): Promise<void> {
 		if (filterCategory.value) {
 			params.subject = filterCategory.value;
 		}
-		
+
 		if (filterStatus.value) {
 			params.status = filterStatus.value;
 		}
 
 		// Simulate API call - replace with actual service call
-		const response = await fetch(`/api/courses?${new URLSearchParams(params)}`);
+		const response = await adminService.getCourses(params);
 		const data = await response.json();
-		
+
 		courses.value = data.data || [];
 		totalItems.value = data.total || 0;
 	} catch (error) {
@@ -546,7 +502,7 @@ async function saveCourse(): Promise<void> {
 			await coursesStore.createCourse(courseForm.value);
 			message.success("Yangi kurs muvaffaqiyatli qo'shildi");
 		}
-		
+
 		closeModal();
 		await fetchCoursesList(); // Refresh list
 	} catch (error) {
@@ -572,7 +528,7 @@ function closeModal(): void {
 		status: "active" as CourseStatus,
 		description: "",
 		color: "#3b82f6",
-		icon: "book"
+		icon: "book",
 	};
 }
 
@@ -586,12 +542,12 @@ function formatPrice(price: number): string {
 }
 
 function formatPriceInput(value: number | null): string {
-	if (value === null || value === undefined) return '0';
-	return new Intl.NumberFormat('uz-UZ').format(value);
+	if (value === null || value === undefined) return "0";
+	return new Intl.NumberFormat("uz-UZ").format(value);
 }
 
 function parsePriceInput(input: string): number {
-	const nums = input.replace(/,/g, '');
+	const nums = input.replace(/,/g, "");
 	return Number(nums);
 }
 
@@ -602,10 +558,7 @@ watch([filterCategory, filterStatus], () => {
 
 // Lifecycle
 onMounted(async () => {
-	await Promise.all([
-		fetchCoursesList(),
-		fetchTeachers()
-	]);
+	await Promise.all([fetchCoursesList(), fetchTeachers()]);
 });
 </script>
 
@@ -663,7 +616,7 @@ onMounted(async () => {
 	.courses-page {
 		padding: 16px;
 	}
-	
+
 	.stats-grid {
 		grid-template-columns: repeat(2, 1fr);
 	}

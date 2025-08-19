@@ -272,7 +272,7 @@ const messages = ref([
 		from_user_name: "Dilfuza Rahimova",
 		to_user_id: 4,
 		to_user_name: "Ali Karimov",
-		subject: "Matematika darsi",
+		subject: "Mobilografiya darsi",
 		content: "Ertangi darsda yangi mavzuni boshlash.",
 		is_read: true,
 		sent_at: "2024-07-01T11:15:00Z",
