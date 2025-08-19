@@ -17,13 +17,15 @@
 	},
 	"dependencies": {
 		"@vueuse/core": "^13.4.0",
+		"apexcharts": "^5.3.3",
 		"axios": "^1.6.7",
 		"json-server-auth": "^2.1.0",
 		"lucide-vue-next": "^0.316.0",
 		"naive-ui": "^2.38.1",
 		"pinia": "^2.1.7",
 		"vue": "^3.4.15",
-		"vue-router": "^4.2.5"
+		"vue-router": "^4.2.5",
+		"vue3-apexcharts": "^1.8.0"
 	},
 	"devDependencies": {
 		"@tailwindcss/vite": "^4.0.0-alpha.4",

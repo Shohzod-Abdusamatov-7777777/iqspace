@@ -100,12 +100,38 @@
 				</n-grid>
 			</n-space>
 		</n-card>
+
+		<!-- Charts Section -->
+		<n-grid cols="1 l:2" x-gap="24" y-gap="24" responsive="screen">
+			<n-gi>
+				<n-card title="O'quvchilar statistikasi" hoverable>
+					<div class="chart-container">
+						<apexchart type="bar" height="300" :options="barChartOptions" :series="barChartSeries"></apexchart>
+					</div>
+				</n-card>
+			</n-gi>
+			<n-gi>
+				<n-card title="Kurslar bo'yicha taqsimot" hoverable>
+					<div class="chart-container">
+						<apexchart type="donut" height="300" :options="donutChartOptions" :series="donutChartSeries"></apexchart>
+					</div>
+				</n-card>
+			</n-gi>
+		</n-grid>
+
+		<!-- Growth Chart -->
+		<n-card title="O'sish dinamikasi" hoverable>
+			<div class="chart-container">
+				<apexchart type="line" height="350" :options="lineChartOptions" :series="lineChartSeries"></apexchart>
+			</div>
+		</n-card>
 	</n-space>
 </template>
 
 <script setup lang="ts">
 import { ref } from "vue";
 import { NButton, NCard, NSpace, NGrid, NGi, NH2, NH3, NH4, NText } from "naive-ui";
+// ApexCharts global component sifatida registratsiya qilingan
 import {
 	DownloadIcon,
 	PlusIcon,
@@ -119,6 +145,147 @@ import {
 	SquareDotIcon,
 	FlaskConicalIcon,
 } from "lucide-vue-next";
+
+// ApexCharts configurations
+// Bar Chart
+const barChartSeries = ref([
+	{
+		name: "O'quvchilar",
+		data: [1200, 1450, 980, 1650, 1320, 1580],
+	},
+]);
+
+const barChartOptions = ref({
+	chart: {
+		type: "bar",
+		toolbar: { show: false },
+		fontFamily: "Inter, sans-serif",
+	},
+	colors: ["#3b82f6"],
+	plotOptions: {
+		bar: {
+			borderRadius: 8,
+			columnWidth: "60%",
+		},
+	},
+	dataLabels: { enabled: false },
+	xaxis: {
+		categories: ["Yan", "Fev", "Mar", "Apr", "May", "Iyun"],
+		labels: {
+			style: { colors: "#6b7280", fontSize: "12px" },
+		},
+	},
+	yaxis: {
+		labels: {
+			style: { colors: "#6b7280", fontSize: "12px" },
+		},
+	},
+	grid: {
+		borderColor: "#f3f4f6",
+		strokeDashArray: 5,
+	},
+	tooltip: {
+		theme: "light",
+		y: {
+			formatter: (val: number) => `${val} o'quvchi`,
+		},
+	},
+});
+
+// Donut Chart
+const donutChartSeries = ref([35, 25, 20, 20]);
+
+const donutChartOptions = ref({
+	chart: {
+		type: "donut",
+		fontFamily: "Inter, sans-serif",
+	},
+	colors: ["#3b82f6", "#06b6d4", "#8b5cf6", "#10b981"],
+	labels: ["Dasturlash", "Dizayn", "Marketing", "Biznes"],
+	legend: {
+		position: "bottom",
+		fontSize: "14px",
+		fontWeight: 500,
+		labels: { colors: "#374151" },
+	},
+	plotOptions: {
+		pie: {
+			donut: {
+				size: "70%",
+				labels: {
+					show: true,
+					total: {
+						show: true,
+						label: "Jami",
+						fontSize: "16px",
+						fontWeight: 600,
+						color: "#1f2937",
+					},
+				},
+			},
+		},
+	},
+	dataLabels: {
+		enabled: true,
+		formatter: (val: number) => `${val.toFixed(1)}%`,
+		style: { fontSize: "12px", fontWeight: 600 },
+	},
+	tooltip: {
+		y: {
+			formatter: (val: number) => `${val}%`,
+		},
+	},
+});
+
+// Line Chart
+const lineChartSeries = ref([
+	{
+		name: "O'sish %",
+		data: [45, 52, 38, 65, 58, 72, 68],
+	},
+]);
+
+const lineChartOptions = ref({
+	chart: {
+		type: "line",
+		toolbar: { show: false },
+		fontFamily: "Inter, sans-serif",
+	},
+	colors: ["#3b82f6"],
+	stroke: {
+		curve: "smooth",
+		width: 3,
+	},
+	markers: {
+		size: 6,
+		colors: ["#3b82f6"],
+		strokeColors: "#ffffff",
+		strokeWidth: 2,
+		hover: { size: 8 },
+	},
+	xaxis: {
+		categories: ["Yan", "Fev", "Mar", "Apr", "May", "Iyun", "Iyul"],
+		labels: {
+			style: { colors: "#6b7280", fontSize: "12px" },
+		},
+	},
+	yaxis: {
+		labels: {
+			style: { colors: "#6b7280", fontSize: "12px" },
+			formatter: (val: number) => `${val}%`,
+		},
+	},
+	grid: {
+		borderColor: "#f3f4f6",
+		strokeDashArray: 5,
+	},
+	tooltip: {
+		theme: "light",
+		y: {
+			formatter: (val: number) => `${val}%`,
+		},
+	},
+});
 
 const courses = ref([
 	{
@@ -153,3 +320,9 @@ const courses = ref([
 	},
 ]);
 </script>
+
+<style scoped>
+.chart-container {
+	padding: 16px 0;
+}
+</style>

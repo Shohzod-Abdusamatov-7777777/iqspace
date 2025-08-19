@@ -424,12 +424,12 @@ async function fetchCoursesList(): Promise<void> {
 			params.status = filterStatus.value;
 		}
 
-		// Simulate API call - replace with actual service call
-		const response = await adminService.getCourses(params);
-		const data = await response.json();
+		// AdminService orqali API chaqiruvi
+		const response = await adminService.getCourses(params.page, params.limit, params.search);
+		const data = (response as any).data || response || [];
 
-		courses.value = data.data || [];
-		totalItems.value = data.total || 0;
+		courses.value = data;
+		totalItems.value = data.length || 0;
 	} catch (error) {
 		message.error("Kurslarni yuklashda xato yuz berdi");
 		console.error("Error fetching courses:", error);
@@ -496,10 +496,10 @@ async function saveCourse(): Promise<void> {
 		saving.value = true;
 
 		if (editingCourse.value) {
-			await coursesStore.updateCourse(editingCourse.value.id, courseForm.value);
+			await coursesStore.updateCourse(editingCourse.value.id, courseForm.value as any);
 			message.success("Kurs muvaffaqiyatli yangilandi");
 		} else {
-			await coursesStore.createCourse(courseForm.value);
+			await coursesStore.createCourse(courseForm.value as any);
 			message.success("Yangi kurs muvaffaqiyatli qo'shildi");
 		}
 

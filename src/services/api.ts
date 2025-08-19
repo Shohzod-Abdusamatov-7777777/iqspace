@@ -153,7 +153,7 @@ export class AdminService extends ApiService {
 
   // Courses
   async getCourses(page = 1, limit = 10, search = '') {
-    return this.getPaginated('/admin/courses', page, limit, search);
+    return this.getPaginated('/courses', page, limit, search);
   }
 
   async createCourse(data: any) {
