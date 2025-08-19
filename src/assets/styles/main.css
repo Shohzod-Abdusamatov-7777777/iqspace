@@ -1,0 +1,86 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@theme {
+	--color-secondary-50: #f8fafc;
+	--color-secondary-100: #f1f5f9;
+	--color-secondary-200: #e2e8f0;
+	--color-secondary-300: #cad5e2;
+	--color-secondary-400: #90a1b9;
+	--color-secondary-500: #62748e;
+	--color-secondary-600: #45556c;
+	--color-secondary-700: #314158;
+	--color-secondary-800: #1d293d;
+	--color-secondary-900: #0f172b;
+	--color-secondary-950: #020618;
+
+	--color-primary: #4649e5;
+	--color-primary-50: #eeeeff;
+	--color-primary-100: #e0e1ff;
+	--color-primary-200: #c7c8fe;
+	--color-primary-300: #a5a7fc;
+	--color-primary-400: #8184f8;
+	--color-primary-500: #6366f1;
+	--color-primary-600: #4649e5;
+	--color-primary-700: #383bca;
+	--color-primary-800: #3032a3;
+	--color-primary-900: #2e3081;
+	--color-primary-950: #1b1c4b;
+
+	--color-success-50: #ecfdf7;
+	--color-success-100: #d1faec;
+	--color-success-200: #a7f3da;
+	--color-success-300: #6ee7bf;
+	--color-success-400: #34d39e;
+	--color-success-500: #10b981;
+	--color-success-600: #059666;
+	--color-success-700: #047852;
+	--color-success-800: #065f42;
+	--color-success-900: #064e36;
+	--color-success-950: #022c1e;
+
+	--color-warning-50: #fff8eb;
+	--color-warning-100: #feeac7;
+	--color-warning-200: #fdd28a;
+	--color-warning-300: #fcbb4d;
+	--color-warning-400: #fbab24;
+	--color-warning-500: #f59e0b;
+	--color-warning-600: #d98b06;
+	--color-warning-700: #b47409;
+	--color-warning-800: #92610e;
+	--color-warning-900: #78510f;
+	--color-warning-950: #452c03;
+
+	--color-danger-50: #fef2f2;
+	--color-danger-100: #fee2e2;
+	--color-danger-200: #fecaca;
+	--color-danger-300: #fca5a5;
+	--color-danger-400: #f87171;
+	--color-danger-500: #ef4444;
+	--color-danger-600: #dc2626;
+	--color-danger-700: #b91c1c;
+	--color-danger-800: #991b1b;
+	--color-danger-900: #7f1d1d;
+	--color-danger-950: #450a0a;
+}
+
+* {
+	border-color: var(--n-border-color);
+}
+
+@utility container {
+	margin-inline: auto;
+	padding-inline: 2rem;
+}
+
+@layer base {
+	body {
+		@apply bg-white dark:bg-slate-900 text-gray-900 dark:text-white;
+	}
+}
+
+.n-data-table-th__title,
+.n-data-table-td {
+	word-break: initial;
+}
