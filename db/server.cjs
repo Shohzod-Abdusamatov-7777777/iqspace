@@ -22,7 +22,7 @@ server.use((req, res, next) => {
 server.use(jsonServer.bodyParser)
 
 // Add custom routes for authentication
-server.post('/api/auth/login', (req, res) => {
+server.post('/auth/login', (req, res) => {
   const { phone } = req.body;
 
   try {
@@ -84,19 +84,19 @@ server.post('/api/auth/login', (req, res) => {
 });
 
 // Add pagination support for users endpoint
-server.get('/api/users', (req, res) => {
+server.get('/users', (req, res) => {
   try {
     const db = router.db;
-    
+
     if (!db) {
       return res.status(500).json({
         success: false,
         message: 'Database not initialized'
       });
     }
-    
+
     const users = db.get('users').value();
-    
+
     if (!users || !Array.isArray(users)) {
       return res.status(500).json({
         success: false,
@@ -157,19 +157,19 @@ server.get('/api/users', (req, res) => {
 });
 
 // Add pagination support for courses endpoint  
-server.get('/api/courses', (req, res) => {
+server.get('/courses', (req, res) => {
   try {
     const db = router.db;
-    
+
     if (!db) {
       return res.status(500).json({
         success: false,
         message: 'Database not initialized'
       });
     }
-    
+
     const courses = db.get('courses').value();
-    
+
     if (!courses || !Array.isArray(courses)) {
       return res.status(500).json({
         success: false,
@@ -257,10 +257,10 @@ server.get('/api/courses', (req, res) => {
 });
 
 // Claude AI Chat endpoint
-server.post('/api/chat/claude', (req, res) => {
+server.post('/chat/claude', (req, res) => {
   try {
     const { messages, language = 'uz', responseLength = 'medium', context = 'general' } = req.body;
-    
+
     // Simple mock responses based on context and language
     const mockResponses = {
       uz: {
@@ -319,7 +319,7 @@ server.post('/api/chat/claude', (req, res) => {
     // Get the last user message
     const lastMessage = messages[messages.length - 1];
     const userText = lastMessage?.content?.toLowerCase() || '';
-    
+
     // Simple keyword-based responses
     let response = '';
     let action = null;
@@ -382,7 +382,7 @@ server.post('/api/chat/claude', (req, res) => {
 server.use(middlewares)
 
 // Use default router for other routes
-server.use('/api', router)
+server.use('', router)
 
 const PORT = process.env.PORT || 3001;
 server.listen(PORT, () => {
