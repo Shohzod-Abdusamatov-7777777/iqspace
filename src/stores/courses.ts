@@ -11,10 +11,10 @@ export const useCoursesStore = defineStore('courses', () => {
   async function fetchCourses() {
     loading.value = true
     error.value = null
-    
+
     try {
       const response = await adminService.getCourses()
-      
+
       if (response.data && Array.isArray(response.data)) {
         // Transform the course data to match our Course interface
         courses.value = response.data.map((course: any) => ({
@@ -46,7 +46,7 @@ export const useCoursesStore = defineStore('courses', () => {
   async function createCourse(courseData: Partial<Course>) {
     loading.value = true
     error.value = null
-    
+
     try {
       const payload = {
         title: courseData.title,
@@ -77,7 +77,7 @@ export const useCoursesStore = defineStore('courses', () => {
   async function updateCourse(id: number, courseData: Partial<Course>) {
     loading.value = true
     error.value = null
-    
+
     try {
       const payload = {
         title: courseData.title,
@@ -108,7 +108,7 @@ export const useCoursesStore = defineStore('courses', () => {
   async function deleteCourse(id: number) {
     loading.value = true
     error.value = null
-    
+
     try {
       await adminService.deleteCourse(id)
       await fetchCourses() // Refresh the list
