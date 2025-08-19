@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia'
 import { ref } from 'vue'
 import type { Teacher } from '@/types'
+import { adminService } from '@/services/api'
 
 export const useTeachersStore = defineStore('teachers', () => {
   const teachers = ref<Teacher[]>([])
@@ -10,15 +11,14 @@ export const useTeachersStore = defineStore('teachers', () => {
   async function fetchTeachers() {
     loading.value = true
     error.value = null
-    
+
     try {
-      // For now, we'll use mock data from the database users with role 'teacher'
-      const response = await fetch('http://localhost:3001/api/users?role=teacher')
-      const data = await response.json()
-      
-      if (data.success) {
+      // Get users with teacher role
+      const response = await adminService.getUsers(1, 100, '', 'teacher')
+
+      if (response.data && Array.isArray(response.data)) {
         // Transform users to teachers format
-        teachers.value = data.data.map((user: any) => ({
+        teachers.value = response.data.map((user: any) => ({
           id: user.id,
           name: user.name,
           email: user.email,
@@ -32,7 +32,7 @@ export const useTeachersStore = defineStore('teachers', () => {
           rating: 4.5, // Default rating
           courses: Math.floor(Math.random() * 5) + 1, // Random course count
           students: Math.floor(Math.random() * 100) + 10, // Random student count
-          birthDate: '1990-01-01', // Default birth date
+          birthDate: user.birthDate || '1990-01-01',
           qualification: user.qualification || 'Master'
         }))
       }
@@ -47,7 +47,7 @@ export const useTeachersStore = defineStore('teachers', () => {
   async function createTeacher(teacherData: Partial<Teacher>) {
     loading.value = true
     error.value = null
-    
+
     try {
       // Convert teacher data to user format for API
       const userData = {
@@ -61,23 +61,12 @@ export const useTeachersStore = defineStore('teachers', () => {
         experience: `${teacherData.experience || 0} yil`,
         bio: teacherData.bio || '',
         qualification: teacherData.qualification || 'Master',
-        created_at: new Date().toISOString(),
+        birthDate: teacherData.birthDate || '1990-01-01',
         password: '$2a$12$pqOE2Wgh/FNkvcQrM2FnJeu07TfUzaVumINbByvyN.nveQnrUV7IC.' // Default password hash
       }
 
-      const response = await fetch('http://localhost:3001/api/users', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData)
-      })
-
-      if (response.ok) {
-        await fetchTeachers() // Refresh the list
-      } else {
-        throw new Error('Failed to create teacher')
-      }
+      await adminService.createUser(userData)
+      await fetchTeachers() // Refresh the list
     } catch (err) {
       error.value = 'Failed to create teacher'
       console.error('Error creating teacher:', err)
@@ -90,7 +79,7 @@ export const useTeachersStore = defineStore('teachers', () => {
   async function updateTeacher(id: number, teacherData: Partial<Teacher>) {
     loading.value = true
     error.value = null
-    
+
     try {
       const userData = {
         name: teacherData.name,
@@ -100,22 +89,12 @@ export const useTeachersStore = defineStore('teachers', () => {
         subjects: teacherData.specialization?.split(', ') || [],
         experience: `${teacherData.experience || 0} yil`,
         bio: teacherData.bio || '',
-        qualification: teacherData.qualification || 'Master'
+        qualification: teacherData.qualification || 'Master',
+        birthDate: teacherData.birthDate
       }
 
-      const response = await fetch(`http://localhost:3001/api/users/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(userData)
-      })
-
-      if (response.ok) {
-        await fetchTeachers() // Refresh the list
-      } else {
-        throw new Error('Failed to update teacher')
-      }
+      await adminService.updateUser(id, userData)
+      await fetchTeachers() // Refresh the list
     } catch (err) {
       error.value = 'Failed to update teacher'
       console.error('Error updating teacher:', err)
@@ -128,17 +107,10 @@ export const useTeachersStore = defineStore('teachers', () => {
   async function deleteTeacher(id: number) {
     loading.value = true
     error.value = null
-    
-    try {
-      const response = await fetch(`http://localhost:3001/api/users/${id}`, {
-        method: 'DELETE'
-      })
 
-      if (response.ok) {
-        await fetchTeachers() // Refresh the list
-      } else {
-        throw new Error('Failed to delete teacher')
-      }
+    try {
+      await adminService.deleteUser(id)
+      await fetchTeachers() // Refresh the list
     } catch (err) {
       error.value = 'Failed to delete teacher'
       console.error('Error deleting teacher:', err)
